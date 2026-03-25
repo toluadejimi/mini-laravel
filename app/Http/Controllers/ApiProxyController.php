@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 /**
  * Forwards /api/* to the main Laravel backend (BACKEND_URL).
@@ -12,6 +13,64 @@ use Illuminate\Http\Request;
  */
 class ApiProxyController extends Controller
 {
+    /**
+     * PHP does not populate php://input for multipart/form-data, so getContent() is empty
+     * and file uploads would be dropped. Rebuild the request for Guzzle multipart.
+     *
+     * @return array<int, array{name: string, contents: resource|string, filename?: string}>
+     */
+    private function buildMultipartParts(Request $request): array
+    {
+        $parts = [];
+
+        foreach ($request->all() as $name => $value) {
+            if ($request->hasFile($name)) {
+                $uploaded = $request->file($name);
+                $list = is_array($uploaded) ? $uploaded : [$uploaded];
+                $multiple = is_array($uploaded);
+
+                foreach ($list as $file) {
+                    if (! $file instanceof UploadedFile || ! $file->isValid()) {
+                        continue;
+                    }
+                    $parts[] = [
+                        'name' => $multiple ? $name.'[]' : $name,
+                        'contents' => fopen($file->getRealPath(), 'rb'),
+                        'filename' => $file->getClientOriginalName(),
+                    ];
+                }
+            } elseif (is_array($value)) {
+                $this->appendNestedMultipartFields($parts, $name, $value);
+            } else {
+                $parts[] = [
+                    'name' => $name,
+                    'contents' => (string) $value,
+                ];
+            }
+        }
+
+        return $parts;
+    }
+
+    /**
+     * @param  array<int, array{name: string, contents: resource|string, filename?: string}>  $parts
+     */
+    private function appendNestedMultipartFields(array &$parts, string $prefix, array $array): void
+    {
+        foreach ($array as $key => $value) {
+            $fieldName = $prefix.'['.$key.']';
+
+            if (is_array($value)) {
+                $this->appendNestedMultipartFields($parts, $fieldName, $value);
+            } else {
+                $parts[] = [
+                    'name' => $fieldName,
+                    'contents' => (string) $value,
+                ];
+            }
+        }
+    }
+
     public function forward(Request $request, ?string $path = null)
     {
         $path = trim((string) $path, '/');
@@ -48,7 +107,16 @@ class ApiProxyController extends Controller
 
         $methodsWithBody = ['POST', 'PUT', 'PATCH', 'DELETE'];
         if (in_array($request->method(), $methodsWithBody, true)) {
-            $options['body'] = $request->getContent();
+            $contentType = strtolower((string) $request->header('Content-Type'));
+            $isMultipart = str_contains($contentType, 'multipart/form-data');
+
+            if ($isMultipart) {
+                unset($headers['Content-Type']);
+                $options['headers'] = $headers;
+                $options['multipart'] = $this->buildMultipartParts($request);
+            } else {
+                $options['body'] = $request->getContent();
+            }
         }
 
         $guzzleResponse = $client->request($request->method(), $url, $options);
