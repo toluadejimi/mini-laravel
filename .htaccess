@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # If someone opens /public/... in the browser, send them to the same path without /public
+    RewriteCond %{REQUEST_URI} ^/public(?:/|$)
+    RewriteRule ^public(?:/(.*))?$ /$1 [R=301,L]
+
+    # Serve the app from public/ while keeping clean URLs (no /public in the address bar)
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
