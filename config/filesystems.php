@@ -33,7 +33,8 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'serve' => true,
+            /* Do not serve the private disk at /storage — it returns 403 in production (unsigned). */
+            'serve' => false,
             'throw' => false,
             'report' => false,
         ],
@@ -43,6 +44,8 @@ return [
             'root' => storage_path('app/public'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
+            /* Serve storage/app/public at /storage when the symlink is missing or blocked. */
+            'serve' => true,
             'throw' => false,
             'report' => false,
         ],

@@ -1,17 +1,9 @@
 <?php
 
 use App\Http\Controllers\ApiProxyController;
-use App\Http\Controllers\StoragePublicController;
 use App\Http\Controllers\StorefrontController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-
-/*
-| Public disk files: fallback when static /storage is missing or symlink is blocked (403).
-| Ensure `php artisan storage:link` on deploy, or enable FollowSymLinks for public/storage.
-*/
-Route::get('/storage/{path}', [StoragePublicController::class, 'show'])
-    ->where('path', '.*');
 
 /*
 | All /api/* requests are proxied to BACKEND_URL (main Laravel + React API).
