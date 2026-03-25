@@ -218,10 +218,18 @@
     return c + " " + Number(price || 0).toLocaleString("en-NG", { minimumFractionDigits: 0 });
   }
 
+  /** Same as admin: catalog images are stored on the main API host (BACKEND_URL). */
   function resolveImg(url) {
     if (!url) return null;
     if (/^https?:\/\//i.test(url)) return url;
-    return url.startsWith("/") ? url : "/" + url;
+    var path = String(url).trim();
+    path = path.startsWith("/") ? path : "/" + path;
+    var base =
+      typeof window.__BACKEND_URL__ === "string" ? window.__BACKEND_URL__.trim() : "";
+    if (base && path.indexOf("/storage/") === 0) {
+      return base + path;
+    }
+    return path;
   }
 
   function getProductsForCategory(cid) {

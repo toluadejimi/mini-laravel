@@ -36,6 +36,9 @@ function toggleTheme() {
 </script>
 @include('partials.page-loader')
 @yield('content')
+<script>
+window.__BACKEND_URL__ = @json(rtrim((string) config('app.backend_url'), '/'));
+</script>
 <script src="{{ asset('js/loader.js') }}" defer></script>
 <script src="{{ asset('js/mini-api.js') }}"></script>
 @stack('scripts')

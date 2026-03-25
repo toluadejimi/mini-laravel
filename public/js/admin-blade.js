@@ -39,10 +39,18 @@
     return Array.prototype.slice.call(document.querySelectorAll(s));
   }
 
+  /** API uploads live on BACKEND_URL; relative /storage/... must not use the Blade app origin alone. */
   function resolveImageUrl(url) {
     if (!url) return null;
     if (/^https?:\/\//i.test(url)) return url;
-    return String(url).startsWith("/") ? url : "/" + url;
+    var path = String(url).trim();
+    path = path.startsWith("/") ? path : "/" + path;
+    var base =
+      typeof window.__BACKEND_URL__ === "string" ? window.__BACKEND_URL__.trim() : "";
+    if (base && path.indexOf("/storage/") === 0) {
+      return base + path;
+    }
+    return path;
   }
 
   async function miniApiFormData(path, formData, method) {
