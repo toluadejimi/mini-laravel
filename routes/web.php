@@ -1,12 +1,29 @@
 <?php
 
 use App\Http\Controllers\ApiProxyController;
+use App\Http\Controllers\LocalAdminUploadController;
+use App\Http\Controllers\StorageFallbackController;
 use App\Http\Controllers\StorefrontController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
-| All /api/* requests are proxied to BACKEND_URL (main Laravel + React API).
+| Public files: this host first; if missing, server-side proxy from BACKEND_URL (browser stays on this origin).
+*/
+Route::get('/storage/{path}', [StorageFallbackController::class, 'show'])
+    ->where('path', '.*');
+
+/*
+| Admin uploads stay on this server (not proxied to BACKEND_URL).
+*/
+Route::middleware(['api.session', 'admin.session'])->group(function () {
+    Route::post('/api/admin/categories/upload', [LocalAdminUploadController::class, 'category']);
+    Route::post('/api/admin/products/upload', [LocalAdminUploadController::class, 'product']);
+    Route::post('/api/admin/site-settings/upload-logo', [LocalAdminUploadController::class, 'siteLogo']);
+});
+
+/*
+| All other /api/* requests are proxied to BACKEND_URL (main Laravel + React API).
 | Same-origin fetch from Blade/JS works like the React app (session holds token after login).
 */
 Route::any('/api/{path?}', [ApiProxyController::class, 'forward'])->where('path', '.*');

@@ -44,8 +44,8 @@ return [
             'root' => storage_path('app/public'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
-            /* Serve storage/app/public at /storage when the symlink is missing or blocked. */
-            'serve' => true,
+            /* We serve /storage via StorageFallbackController (local + optional backend proxy). */
+            'serve' => false,
             'throw' => false,
             'report' => false,
         ],
