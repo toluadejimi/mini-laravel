@@ -218,10 +218,12 @@
       <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="topbar-title" id="topbarTitle">Dashboard</div>
       <div class="dash-header-right">
-        <button type="button" class="dash-theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" title="Light / dark mode">
-          <span class="dash-theme-toggle__icons" aria-hidden="true">
-            <i class="fa-solid fa-sun dash-theme-toggle__sun"></i>
-            <i class="fa-solid fa-moon dash-theme-toggle__moon"></i>
+        <button type="button" class="dash-theme-toggle" onclick="toggleTheme()" aria-label="Toggle light or dark mode" title="Theme">
+          <span class="dash-theme-toggle__track" aria-hidden="true">
+            <span class="dash-theme-toggle__thumb">
+              <i class="fa-solid fa-sun"></i>
+              <i class="fa-solid fa-moon"></i>
+            </span>
           </span>
         </button>
         <div class="dash-user-pill" data-panel="add-funds" role="button">
@@ -311,8 +313,11 @@
       {{-- Category drill-in --}}
       <section class="dash-panel" id="panel-category-detail" hidden data-panel-id="category-detail">
         <div class="category-breadcrumb">
-          <button type="button" class="breadcrumb-link" id="breadcrumbBack">‹ Back</button>
-          <span class="breadcrumb-sep">›</span>
+          <button type="button" class="breadcrumb-back" id="breadcrumbBack">
+            <i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i>
+            <span>Back</span>
+          </button>
+          <span class="breadcrumb-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
           <span class="breadcrumb-current" id="categoryDetailTitle">—</span>
         </div>
         <div class="category-detail-search" style="padding:0 24px 12px;">
@@ -325,9 +330,12 @@
       <section class="dash-panel" id="panel-categories" hidden data-panel-id="categories">
         <div class="categories-page">
           <div class="categories-page-header">
-            <div class="category-breadcrumb" style="margin-top:0;margin-bottom:16px;padding:0;">
-              <button type="button" class="breadcrumb-link" id="catBreadcrumbHome">Dashboard</button>
-              <span class="breadcrumb-sep">›</span>
+            <div class="category-breadcrumb category-breadcrumb--page" style="margin-top:0;margin-bottom:16px;padding:0;">
+              <button type="button" class="breadcrumb-back" id="catBreadcrumbHome">
+                <i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i>
+                <span>Dashboard</span>
+              </button>
+              <span class="breadcrumb-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
               <span class="breadcrumb-current">Browse store</span>
             </div>
             <h1 class="categories-page-title">Browse store</h1>
