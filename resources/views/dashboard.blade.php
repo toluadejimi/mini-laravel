@@ -320,10 +320,13 @@
           <span class="breadcrumb-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
           <span class="breadcrumb-current" id="categoryDetailTitle">—</span>
         </div>
-        <div class="category-detail-search" style="padding:0 24px 12px;">
-          <input type="search" id="productSearch" class="dash-form-input" placeholder="Filter products in this category…" autocomplete="off" aria-label="Filter products" style="max-width:100%;">
+        <div class="category-detail-toolbar">
+          <label class="category-detail-search" for="productSearch">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" id="productSearch" class="category-detail-search__input" placeholder="Filter products in this category…" autocomplete="off" aria-label="Filter products">
+          </label>
         </div>
-        <div id="categoryProducts" class="category-detail-list product-list-wrap"></div>
+        <div id="categoryProducts" class="category-detail-list product-list-wrap category-detail-products"></div>
       </section>
 
       {{-- Categories browse page --}}

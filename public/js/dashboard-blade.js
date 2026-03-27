@@ -550,7 +550,9 @@
     var cat = selectedCategory;
     var headMark =
       cat.image_url ?
-        '<img src="' + String(resolveImg(cat.image_url)).replace(/"/g, "&quot;") + '" alt="" />' :
+        '<img src="' +
+        String(resolveImg(cat.image_url)).replace(/"/g, "&quot;") +
+        '" alt="" class="store-category-stack__thumb" />' :
         '<span class="store-category-stack__letter">' +
         escapeHtml((cat.name || "?").trim().charAt(0).toUpperCase()) +
         "</span>";
