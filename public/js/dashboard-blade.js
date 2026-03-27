@@ -279,6 +279,46 @@
     );
   }
 
+  /** Browse store search: match products, or whole category when its name matches. */
+  function productsForBrowseCategory(cat, q) {
+    var all = getProductsForCategory(cat.id);
+    if (!q) return all;
+    var catName = (cat.name || "").toLowerCase();
+    if (catName.includes(q)) return all;
+    return all.filter(function (p) {
+      return filterProductText(p, q);
+    });
+  }
+
+  function buildCategoryFeedBlock(cat, prods, titleUppercase) {
+    var rawName = cat.name || "";
+    var titleText = titleUppercase ? rawName.toUpperCase() : rawName;
+    var block = document.createElement("div");
+    block.className = "category-block store-cat-section";
+    block.innerHTML =
+      '<div class="category-header">' +
+      '<div class="cat-head-left">' +
+      '<div class="cat-platform-icon">' +
+      getCatIconHtml(cat) +
+      '</div><div><div class="cat-title">' +
+      escapeHtml(titleText) +
+      '</div></div></div>' +
+      '<button type="button" class="cat-see-more" data-cat-id="' +
+      cat.id +
+      '">See all →</button></div>' +
+      '<div class="product-list category-block-list"></div>';
+
+    var plist = block.querySelector(".product-list");
+    prods.forEach(function (p) {
+      plist.appendChild(buildProductRow(p, cat));
+    });
+
+    block.querySelector(".cat-see-more").addEventListener("click", function () {
+      showCategoryDetail(cat);
+    });
+    return block;
+  }
+
   function filteredCategoriesForHome() {
     var sorted = categories
       .slice()
@@ -357,33 +397,7 @@
       });
       if (prods.length === 0) return;
       hasAny = true;
-
-      var block = document.createElement("div");
-      block.className = "category-block store-cat-section";
-      block.innerHTML =
-        '<div class="category-header">' +
-        '<div class="cat-head-left">' +
-        '<div class="cat-platform-icon">' +
-        getCatIconHtml(cat) +
-        '</div><div><div class="cat-title">' +
-        escapeHtml(cat.name || "") +
-        '</div></div></div>' +
-        '<button type="button" class="cat-see-more" data-cat-id="' +
-        cat.id +
-        '">See all →</button></div>' +
-        '<div class="product-list category-block-list"></div>';
-
-      var plist = block.querySelector(".product-list");
-      prods.forEach(function (p) {
-        var row = buildProductRow(p, cat);
-        plist.appendChild(row);
-      });
-
-      block.querySelector(".cat-see-more").addEventListener("click", function () {
-        showCategoryDetail(cat);
-      });
-
-      feed.appendChild(block);
+      feed.appendChild(buildCategoryFeedBlock(cat, prods, false));
     });
 
     if (!hasAny) {
@@ -443,23 +457,25 @@
     if (!el) return;
     var q = ($("#categorySearchInput") && $("#categorySearchInput").value.trim().toLowerCase()) || "";
     el.innerHTML = "";
-    categories.forEach(function (c) {
-      if (q && !(c.name || "").toLowerCase().includes(q)) return;
-      var card = document.createElement("div");
-      card.className = "category-card";
-      card.innerHTML =
-        '<div class="category-card-icon">' +
-        getCatIconHtml(c) +
-        '</div><div class="category-card-body"><div class="category-card-title">' +
-        escapeHtml(c.name || "") +
-        '</div><div class="category-card-count">' +
-        getProductsForCategory(c.id).length +
-        ' products</div></div><div class="category-card-arrow"><i class="fa-solid fa-chevron-right"></i></div>';
-      card.addEventListener("click", function () {
-        showCategoryDetail(c);
-      });
-      el.appendChild(card);
+
+    var sorted = categories.slice().sort(function (a, b) {
+      return getProductsForCategory(b.id).length - getProductsForCategory(a.id).length;
     });
+
+    var hasAny = false;
+    sorted.forEach(function (cat) {
+      var prods = productsForBrowseCategory(cat, q);
+      if (prods.length === 0) return;
+      hasAny = true;
+      el.appendChild(buildCategoryFeedBlock(cat, prods, true));
+    });
+
+    if (!hasAny) {
+      el.innerHTML =
+        '<div class="categories-empty categories-browse-empty"><div class="categories-empty-icon">📦</div>' +
+        '<h3 class="categories-empty-title">No products match</h3>' +
+        '<p class="categories-empty-desc">Try another search term or browse all categories.</p></div>';
+    }
   }
 
   function switchPanel(name, opts) {

@@ -984,6 +984,27 @@
   gap: 14px;
 }
 
+/* Browse store: stacked category sections (heading + products) */
+.categories-browse-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-bottom: 8px;
+}
+
+.categories-browse-stack .category-block {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.categories-browse-stack .category-block:first-child {
+  margin-top: 0;
+}
+
+.categories-browse-empty {
+  margin-top: 24px;
+}
+
 .category-card {
   display: flex;
   align-items: center;
@@ -5309,6 +5330,11 @@ textarea.dash-form-input {
 
   .categories-grid {
     grid-template-columns: 1fr;
+  }
+
+  .categories-browse-stack .category-block {
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .fund-balance-card {

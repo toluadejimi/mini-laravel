@@ -328,16 +328,16 @@
             <div class="category-breadcrumb" style="margin-top:0;margin-bottom:16px;padding:0;">
               <button type="button" class="breadcrumb-link" id="catBreadcrumbHome">Dashboard</button>
               <span class="breadcrumb-sep">›</span>
-              <span class="breadcrumb-current">Categories</span>
+              <span class="breadcrumb-current">Browse store</span>
             </div>
-            <h1 class="categories-page-title">Browse by category</h1>
-            <p class="categories-page-subtitle">Choose a category to see all products. Use search to filter.</p>
+            <h1 class="categories-page-title">Browse store</h1>
+            <p class="categories-page-subtitle">Each category lists its products. Search by product name or category.</p>
             <div class="categories-search-wrap">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="search" id="categorySearchInput" placeholder="Search categories…" autocomplete="off">
+              <input type="search" id="categorySearchInput" placeholder="Search products by name…" autocomplete="off">
             </div>
           </div>
-          <div id="categoriesListOnly" class="categories-grid"></div>
+          <div id="categoriesListOnly" class="categories-browse-stack"></div>
         </div>
       </section>
 
