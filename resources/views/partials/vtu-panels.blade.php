@@ -1,4 +1,4 @@
-{{-- VTU panels: wallet + /api/vtu/* (SprintPay → VTpass). See backend/docs/VTU_SPRINTPAY.md --}}
+{{-- VTU panels: wallet + /api/vtu/* --}}
 
 <section class="dash-panel" id="panel-airtime" hidden data-panel-id="airtime">
   <div class="vtu-shell">
@@ -6,8 +6,6 @@
       <div class="vtu-hero-icon" aria-hidden="true"><i class="fa-solid fa-mobile-screen"></i></div>
       <div>
         <h2>Airtime</h2>
-        <p>Top up any Nigerian GSM line. Amount is debited from your wallet; fulfilment runs on SprintPay → VTpass.</p>
-        <div class="vtu-trust"><i class="fa-solid fa-shield-halved"></i><span>Secure wallet debit with provider fulfilment and transaction logging.</span></div>
       </div>
     </div>
     <form class="vtu-form" id="formVtuAirtime">
@@ -44,8 +42,6 @@
       <div class="vtu-hero-icon" aria-hidden="true"><i class="fa-solid fa-wifi"></i></div>
       <div>
         <h2>Data bundles</h2>
-        <p>Bundles load from SprintPay <code>GET /get-data</code> and <code>GET /get-data-variations</code> (proxied as <code>/api/vtu/catalog/*</code>). Pick a plan or enter amount manually.</p>
-        <div class="vtu-trust"><i class="fa-solid fa-route"></i><span>Same flow as airtime: wallet debit only after SprintPay confirms success (or mock).</span></div>
       </div>
     </div>
     <form class="vtu-form" id="formVtuData">
@@ -96,7 +92,6 @@
       <div>
         <h2>Cable TV</h2>
         <p>Validate your smartcard or IUC, then enter the product code and amount from your provider’s bouquet list.</p>
-        <div class="vtu-trust"><i class="fa-solid fa-circle-info"></i><span>Validation does not charge your wallet. Payment runs only when you tap <strong>Pay subscription</strong>.</span></div>
       </div>
     </div>
     <form class="vtu-form" id="formVtuCable" onsubmit="return false;">
@@ -120,7 +115,7 @@
       <div class="vtu-divider"></div>
       <div class="vtu-field">
         <label for="vtuCableProduct">Product code</label>
-        <input id="vtuCableProduct" type="text" required placeholder="From bouquet / SprintPay docs" maxlength="120" />
+        <input id="vtuCableProduct" type="text" required placeholder="From bouquet list" maxlength="120" />
       </div>
       <div class="vtu-field">
         <label for="vtuCableAmount">Amount (₦)</label>
@@ -140,8 +135,7 @@
       <div class="vtu-hero-icon" aria-hidden="true"><i class="fa-solid fa-bolt"></i></div>
       <div>
         <h2>Electricity</h2>
-        <p>Verify your meter, then pay for units or postpaid bills. Token or receipt details return from SprintPay when supported.</p>
-        <div class="vtu-trust"><i class="fa-solid fa-plug-circle-bolt"></i><span>Use the disco code required by SprintPay (e.g. IKEDC, EKEDC — match their documentation).</span></div>
+        <p>Verify your meter, then pay for units or postpaid bills.</p>
       </div>
     </div>
     <form class="vtu-form" id="formVtuElectricity" onsubmit="return false;">

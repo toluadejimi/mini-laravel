@@ -1,4 +1,4 @@
-/* VTU / bills panels — SprintPay → VTpass (dashboard) */
+/* VTU / bills panels (dashboard) */
 .vtu-shell {
   max-width: 720px;
   margin: 0 auto;
@@ -42,25 +42,6 @@
   font-size: 14px;
   line-height: 1.55;
   color: hsl(var(--db-text-muted));
-}
-
-.vtu-trust {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 12px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: hsl(var(--db-bg));
-  border: 1px solid hsl(var(--db-border));
-  font-size: 12px;
-  color: hsl(var(--db-text-muted));
-  line-height: 1.45;
-}
-
-.vtu-trust i {
-  color: hsl(var(--db-green));
-  margin-top: 2px;
 }
 
 .vtu-form {

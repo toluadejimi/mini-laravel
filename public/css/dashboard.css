@@ -5530,6 +5530,210 @@ textarea.dash-form-input {
   margin-bottom: 0;
 }
 
+/* ─── Store product cards (browse + home): matches stacked “category → white rows” layout ─── */
+.store-product-card {
+  align-items: flex-start;
+}
+
+.store-product-card__icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: hsl(220 35% 94%);
+  border: 1px solid hsl(220 20% 88%);
+}
+
+.store-product-card__icon .store-prod-thumb,
+.store-product-card__icon .store-cat-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.store-product-card__icon .store-prod-letter,
+.store-product-card__icon .store-cat-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: hsl(220 40% 32%);
+  background: hsl(220 35% 92%);
+}
+
+.store-product-card__icon .store-cat-letter--emoji {
+  font-size: 22px;
+  line-height: 1;
+  background: hsl(220 35% 92%);
+}
+
+.store-product-card__mid {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.store-product-card__title {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: hsl(var(--db-text));
+}
+
+.store-product-card__desc {
+  font-size: 12px;
+  line-height: 1.45;
+  color: hsl(var(--db-text-muted));
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.store-product-card__pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.store-product-card__buy {
+  flex-shrink: 0;
+  align-self: center;
+  padding-top: 2px;
+}
+
+.category-block-list .store-product-card .stock-pill {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.category-block-list .store-product-card .buy-btn-icon.store-cart-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px hsl(220 70% 25% / 0.12);
+}
+
+.category-block-list .store-product-card .buy-btn-icon.store-cart-btn:hover {
+  box-shadow: 0 4px 14px hsl(220 70% 25% / 0.2);
+}
+
+/* Category strip like reference: dark bar, full title */
+.store-cat-section .category-header {
+  background: hsl(220 32% 9%);
+  padding: 10px 16px;
+}
+
+.store-cat-section .cat-platform-icon {
+  background: hsl(0 0% 100% / 0.12);
+}
+
+.store-cat-section .cat-title {
+  max-width: none;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.store-cat-section .cat-see-more {
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.store-cat-section.category-block {
+  background: hsl(220 20% 97%);
+  border-color: hsl(220 15% 88%);
+}
+
+.store-cat-section .category-block-list {
+  background: hsl(220 22% 96%);
+  padding: 14px 14px 16px;
+}
+
+.store-cat-section .category-block-list .store-product-card {
+  background: hsl(0 0% 100%);
+  border: 1px solid hsl(220 14% 90%);
+  box-shadow: 0 1px 3px hsl(220 20% 20% / 0.06);
+}
+
+.store-cat-section .category-block-list .store-product-card__title {
+  color: hsl(220 25% 12%);
+}
+
+.store-cat-section .category-block-list .store-product-card__desc {
+  color: hsl(220 12% 42%);
+}
+
+.store-cat-section .category-block-list .store-product-card .stock-pill {
+  background: hsl(220 16% 96%);
+  border-color: hsl(220 14% 88%);
+  color: hsl(220 25% 18%);
+}
+
+.store-cat-section .category-block-list .store-product-card .stock-pill.zero {
+  color: hsl(220 10% 48%);
+}
+
+.store-cat-section .category-block-list .store-product-card .price-pill {
+  background: hsl(145 42% 93%);
+  border: 1px solid hsl(145 35% 82%);
+  color: hsl(145 55% 26%);
+}
+
+/* Dark dashboard theme: keep store blocks readable (white cards, light list well) */
+[data-theme="dark"] .store-cat-section.category-block {
+  background: hsl(220 22% 11%);
+  border-color: hsl(220 18% 22%);
+}
+
+[data-theme="dark"] .store-cat-section .category-block-list {
+  background: hsl(220 20% 13%);
+}
+
+[data-theme="dark"] .store-cat-section .category-block-list .store-product-card {
+  background: hsl(0 0% 100%);
+  border-color: hsl(220 14% 88%);
+  box-shadow: 0 2px 12px hsl(0 0% 0% / 0.2);
+}
+
+[data-theme="dark"] .store-cat-section .category-block-list .store-product-card__title {
+  color: hsl(220 25% 12%);
+}
+
+[data-theme="dark"] .store-cat-section .category-block-list .store-product-card__desc {
+  color: hsl(220 12% 40%);
+}
+
+[data-theme="dark"] .store-cat-section .category-block-list .store-product-card .stock-pill {
+  background: hsl(220 18% 96%);
+  border-color: hsl(220 14% 88%);
+  color: hsl(220 25% 16%);
+}
+
+[data-theme="dark"] .store-cat-section .category-block-list .product-list-sample {
+  color: hsl(145 55% 32%);
+}
+
 .product-list-sample {
   display: inline-flex;
   align-items: center;
@@ -5561,6 +5765,59 @@ textarea.dash-form-input {
   border-radius: 10px;
   border: 1px solid hsl(var(--db-border));
   border-bottom: 1px solid hsl(var(--db-border));
+}
+
+.category-detail-list .product-list .store-product-card {
+  background: hsl(0 0% 100%);
+  border: 1px solid hsl(220 14% 90%);
+  box-shadow: 0 1px 3px hsl(220 20% 20% / 0.06);
+}
+
+.category-detail-list .product-list .store-product-card__title {
+  color: hsl(220 25% 12%);
+}
+
+.category-detail-list .product-list .store-product-card__desc {
+  color: hsl(220 12% 42%);
+}
+
+.category-detail-list .product-list .store-product-card .stock-pill {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.category-detail-list .product-list .store-product-card .buy-btn-icon.store-cart-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+[data-theme="dark"] .category-detail-list .product-list .store-product-card {
+  background: hsl(0 0% 100%);
+  border-color: hsl(220 14% 88%);
+  box-shadow: 0 2px 12px hsl(0 0% 0% / 0.2);
+}
+
+[data-theme="dark"] .category-detail-list .product-list .store-product-card__title {
+  color: hsl(220 25% 12%);
+}
+
+[data-theme="dark"] .category-detail-list .product-list .store-product-card__desc {
+  color: hsl(220 12% 40%);
+}
+
+[data-theme="dark"] .category-detail-list .product-list .store-product-card .stock-pill {
+  background: hsl(220 18% 96%);
+  border-color: hsl(220 14% 88%);
+  color: hsl(220 25% 16%);
 }
 
 /* Category detail filters */
