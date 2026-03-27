@@ -12,11 +12,6 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bliss-dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
-    <style>
-      /* Moon when light (→ dark); sun when dark (→ light) */
-      .theme-toggle-btn { display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
-      .theme-toggle-btn .fa-circle-half-stroke { font-size: 1.15rem; opacity: 0.92; }
-    </style>
     @stack('styles')
 </head>
 <body data-theme="light">

@@ -218,8 +218,11 @@
       <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="topbar-title" id="topbarTitle">Dashboard</div>
       <div class="dash-header-right">
-        <button type="button" class="nav-theme-btn theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">
-          <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+        <button type="button" class="dash-theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" title="Light / dark mode">
+          <span class="dash-theme-toggle__icons" aria-hidden="true">
+            <i class="fa-solid fa-sun dash-theme-toggle__sun"></i>
+            <i class="fa-solid fa-moon dash-theme-toggle__moon"></i>
+          </span>
         </button>
         <div class="dash-user-pill" data-panel="add-funds" role="button">
           <span class="bal-icon"><i class="fa-solid fa-wallet"></i></span>

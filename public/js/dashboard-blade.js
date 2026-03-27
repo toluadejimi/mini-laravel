@@ -218,6 +218,14 @@
     return c + " " + Number(price || 0).toLocaleString("en-NG", { minimumFractionDigits: 0 });
   }
 
+  function formatStorePrice(currency, price) {
+    var cU = String(currency || "NGN").toUpperCase();
+    if (cU === "NGN") {
+      return "₦" + Number(price || 0).toLocaleString("en-NG", { maximumFractionDigits: 0 });
+    }
+    return formatPrice(currency, price);
+  }
+
   function resolveImg(url) {
     if (!url) return null;
     if (/^https?:\/\//i.test(url)) return url;
@@ -232,9 +240,28 @@
 
   function getCatIconHtml(cat) {
     if (cat.image_url) {
-      return '<img src="' + resolveImg(cat.image_url) + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" />';
+      return (
+        '<img src="' +
+        resolveImg(cat.image_url) +
+        '" alt="" class="store-cat-thumb" />'
+      );
     }
-    return cat.emoji || "📁";
+    var letter = (cat.name || (cat.emoji ? "" : "?")).trim().charAt(0);
+    if (!letter && cat.emoji) return '<span class="store-cat-letter store-cat-letter--emoji">' + cat.emoji + "</span>";
+    return '<span class="store-cat-letter">' + escapeHtml(letter.toUpperCase()) + "</span>";
+  }
+
+  function getProductIconHtml(p, cat) {
+    if (p.image_url) {
+      return (
+        '<img src="' +
+        resolveImg(p.image_url) +
+        '" alt="" class="store-prod-thumb" />'
+      );
+    }
+    var raw = (p.title || p.platform || cat.name || "?").trim();
+    var letter = raw.charAt(0).toUpperCase();
+    return '<span class="store-prod-letter">' + escapeHtml(letter) + "</span>";
   }
 
   function searchQuery() {
@@ -332,14 +359,14 @@
       hasAny = true;
 
       var block = document.createElement("div");
-      block.className = "category-block";
+      block.className = "category-block store-cat-section";
       block.innerHTML =
         '<div class="category-header">' +
         '<div class="cat-head-left">' +
         '<div class="cat-platform-icon">' +
         getCatIconHtml(cat) +
         '</div><div><div class="cat-title">' +
-        (cat.name || "") +
+        escapeHtml(cat.name || "") +
         '</div></div></div>' +
         '<button type="button" class="cat-see-more" data-cat-id="' +
         cat.id +
@@ -369,11 +396,7 @@
 
   function buildProductRow(p, cat) {
     var row = document.createElement("div");
-    row.className = "account-row";
-    var imgUrl = resolveImg(p.image_url);
-    var iconHtml = imgUrl
-      ? '<img src="' + imgUrl + '" alt="" style="width:44px;height:44px;border-radius:12px;object-fit:cover;" />'
-      : getCatIconHtml(cat);
+    row.className = "account-row store-product-card";
     var stock = Number(p.stock || 0);
     var stockClass = stock === 0 ? "zero" : stock < 10 ? "low" : "";
     var sample =
@@ -383,26 +406,28 @@
         '" target="_blank" rel="noopener noreferrer" class="product-list-sample"><i class="fa-solid fa-external-link"></i> View sample</a>' :
         "";
     row.innerHTML =
-      '<div class="acc-platform-icon">' +
-      iconHtml +
-      '</div><div class="acc-content"><div class="acc-info"><div class="acc-desc-title">' +
-      (p.title || "") +
-      '</div><div class="acc-desc">' +
-      (p.description || "").slice(0, 220) +
+      '<div class="store-product-card__icon">' +
+      getProductIconHtml(p, cat) +
+      '</div><div class="store-product-card__mid">' +
+      '<div class="store-product-card__title">' +
+      escapeHtml(p.title || "") +
+      '</div><div class="store-product-card__desc">' +
+      escapeHtml((p.description || "").slice(0, 220)) +
       "</div>" +
       sample +
-      '</div><div class="acc-meta-row"><div class="acc-stock-price">' +
+      '<div class="store-product-card__pills">' +
       '<span class="stock-pill ' +
       stockClass +
       '">' +
       stock +
       '</span><span class="price-pill">' +
-      formatPrice(p.currency, p.price) +
-      "</span></div>" +
+      formatStorePrice(p.currency, p.price) +
+      "</span></div></div>" +
+      '<div class="store-product-card__buy">' +
       (stock > 0
-        ? '<button type="button" class="buy-btn buy-btn-icon" aria-label="Buy"><i class="fa-solid fa-cart-shopping"></i></button>'
-        : '<button type="button" class="buy-btn buy-btn-icon" disabled><i class="fa-solid fa-cart-shopping"></i></button>') +
-      "</div></div>";
+        ? '<button type="button" class="buy-btn buy-btn-icon store-cart-btn" aria-label="Buy"><i class="fa-solid fa-cart-shopping"></i></button>'
+        : '<button type="button" class="buy-btn buy-btn-icon store-cart-btn" disabled aria-label="Out of stock"><i class="fa-solid fa-cart-shopping"></i></button>') +
+      "</div>";
 
     var buy = row.querySelector(".buy-btn:not([disabled])");
     if (buy) {
@@ -426,7 +451,7 @@
         '<div class="category-card-icon">' +
         getCatIconHtml(c) +
         '</div><div class="category-card-body"><div class="category-card-title">' +
-        (c.name || "") +
+        escapeHtml(c.name || "") +
         '</div><div class="category-card-count">' +
         getProductsForCategory(c.id).length +
         ' products</div></div><div class="category-card-arrow"><i class="fa-solid fa-chevron-right"></i></div>';
@@ -483,7 +508,24 @@
       return p.category_id === selectedCategory.id;
     });
     var q = searchQuery();
-    wrap.innerHTML = '<div class="product-list"></div>';
+    var cat = selectedCategory;
+    var headMark =
+      cat.image_url ?
+        '<img src="' + String(resolveImg(cat.image_url)).replace(/"/g, "&quot;") + '" alt="" />' :
+        '<span class="store-category-stack__letter">' +
+        escapeHtml((cat.name || "?").trim().charAt(0).toUpperCase()) +
+        "</span>";
+    wrap.innerHTML =
+      '<div class="store-category-stack">' +
+      '<div class="store-category-stack__header">' +
+      '<div class="store-category-stack__head-row">' +
+      '<div class="store-category-stack__mark">' +
+      headMark +
+      "</div>" +
+      '<span class="store-category-stack__name">' +
+      escapeHtml((cat.name || "").toUpperCase()) +
+      "</span></div></div>" +
+      '<div class="store-category-stack__body"><div class="product-list store-product-list"></div></div></div>';
     var inner = wrap.querySelector(".product-list");
     list.forEach(function (p) {
       if (!filterProductText(p, q)) return;
