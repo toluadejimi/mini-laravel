@@ -69,6 +69,36 @@
     return s === "1" || s === "true" || s === "yes" || s === "on";
   }
 
+  /**
+   * /site-settings may return a flat object, { settings: [{ key, value }] }, or an array of rows (same shape as admin).
+   * Without this, feature flags are never read and featureOn() always uses defaults (e.g. SMS verify stays "on").
+   */
+  function normalizeSiteSettingsResponse(raw) {
+    if (raw == null) return {};
+    if (Array.isArray(raw)) {
+      var map = {};
+      raw.forEach(function (row) {
+        if (row && row.key != null) map[String(row.key)] = row.value;
+      });
+      return map;
+    }
+    if (typeof raw === "object") {
+      var out = Object.assign({}, raw);
+      if (Array.isArray(raw.settings)) {
+        raw.settings.forEach(function (row) {
+          if (row && row.key != null) out[String(row.key)] = row.value;
+        });
+      }
+      if (Array.isArray(raw.data)) {
+        raw.data.forEach(function (row) {
+          if (row && row.key != null) out[String(row.key)] = row.value;
+        });
+      }
+      return out;
+    }
+    return {};
+  }
+
   function applyBranding() {
     // Site name
     var name = siteName();
@@ -880,7 +910,7 @@
     categories = Array.isArray(cats) ? cats : [];
     products = Array.isArray(prods) ? prods : [];
     messages = Array.isArray(msgs) ? msgs : [];
-    siteSettings = ss && typeof ss === "object" ? ss : {};
+    siteSettings = normalizeSiteSettingsResponse(ss);
 
     applyThemePreset();
     applyBranding();
