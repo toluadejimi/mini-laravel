@@ -232,9 +232,25 @@
     return url.startsWith("/") ? url : "/" + url;
   }
 
+  function normalizeEntityId(v) {
+    if (v == null || v === "") return "";
+    return String(v);
+  }
+
+  /** Backend may use snake_case or camelCase; ids may be number or string in JSON. */
+  function productCategoryId(p) {
+    if (!p || typeof p !== "object") return "";
+    var raw = p.category_id != null ? p.category_id : p.categoryId;
+    return normalizeEntityId(raw);
+  }
+
+  function productMatchesCategory(p, categoryId) {
+    return productCategoryId(p) === normalizeEntityId(categoryId);
+  }
+
   function getProductsForCategory(cid) {
     return products.filter(function (p) {
-      return p.category_id === cid;
+      return productMatchesCategory(p, cid);
     });
   }
 
@@ -495,7 +511,14 @@
     document.getElementById("dashSidebar") && document.getElementById("dashSidebar").classList.remove("open");
     document.getElementById("sidebarOverlay") && document.getElementById("sidebarOverlay").classList.remove("show");
 
-    if (name === "categories") renderCategoriesPage();
+    if (name === "categories") {
+      renderCategoriesPage();
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          renderCategoriesPage();
+        });
+      });
+    }
     if (name === "add-funds") {
       if (!(opts && opts.keepSuccess)) resetFundSuccessUi();
       syncFundUi();
@@ -521,7 +544,7 @@
     var wrap = $("#categoryProducts");
     if (!wrap || !selectedCategory) return;
     var list = products.filter(function (p) {
-      return p.category_id === selectedCategory.id;
+      return productMatchesCategory(p, selectedCategory.id);
     });
     var q = searchQuery();
     var cat = selectedCategory;
