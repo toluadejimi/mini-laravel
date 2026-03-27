@@ -1005,6 +1005,7 @@
       $("#ffProducts") && ($("#ffProducts").checked = isOn(map.feature_store_enabled, true));
       $("#ffWalletFunding") && ($("#ffWalletFunding").checked = isOn(map.feature_add_funds_enabled, true));
       $("#ffVtu") && ($("#ffVtu").checked = isOn(map.feature_vtu_enabled, true));
+      $("#ffSmsVerify") && ($("#ffSmsVerify").checked = isOn(map.feature_sms_verify_enabled, true));
       $("#ffVirtualAccount") && ($("#ffVirtualAccount").checked = isOn(map.feature_virtual_account_enabled, true));
       $("#ffSprintpayPay") && ($("#ffSprintpayPay").checked = isOn(map.feature_sprintpay_pay_enabled, true));
       $("#ffSupport") && ($("#ffSupport").checked = isOn(map.feature_support_enabled, true));
@@ -1057,6 +1058,7 @@
       set("feature_store_enabled", normalizeBoolSetting($("#ffProducts") && $("#ffProducts").checked));
       set("feature_add_funds_enabled", normalizeBoolSetting($("#ffWalletFunding") && $("#ffWalletFunding").checked));
       set("feature_vtu_enabled", normalizeBoolSetting($("#ffVtu") && $("#ffVtu").checked));
+      set("feature_sms_verify_enabled", normalizeBoolSetting($("#ffSmsVerify") && $("#ffSmsVerify").checked));
       set("feature_virtual_account_enabled", normalizeBoolSetting($("#ffVirtualAccount") && $("#ffVirtualAccount").checked));
       set("feature_sprintpay_pay_enabled", normalizeBoolSetting($("#ffSprintpayPay") && $("#ffSprintpayPay").checked));
       set("feature_support_enabled", normalizeBoolSetting($("#ffSupport") && $("#ffSupport").checked));

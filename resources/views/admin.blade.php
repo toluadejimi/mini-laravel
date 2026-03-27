@@ -210,6 +210,10 @@
                 <span><strong>VTU</strong> (airtime/data/cable/electricity)</span>
               </label>
               <label style="display:flex;align-items:center;gap:10px;">
+                <input type="checkbox" id="ffSmsVerify" />
+                <span><strong>SMS verify</strong> (virtual numbers + SMS history)</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:10px;">
                 <input type="checkbox" id="ffVirtualAccount" />
                 <span><strong>Virtual account</strong> funding method</span>
               </label>

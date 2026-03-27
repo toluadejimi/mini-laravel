@@ -116,6 +116,7 @@
     var storeOn = featureOn("feature_store_enabled", true);
     var fundsOn = featureOn("feature_add_funds_enabled", true);
     var vtuOn = featureOn("feature_vtu_enabled", true);
+    var smsVerifyOn = featureOn("feature_sms_verify_enabled", true);
     var supportOn = featureOn("feature_support_enabled", true);
     var quickOn = featureOn("feature_quick_services_enabled", true);
 
@@ -143,7 +144,8 @@
     togglePanel("data", vtuOn);
     togglePanel("cable-tv", vtuOn);
     togglePanel("electricity", vtuOn);
-    togglePanel("sms-verify", vtuOn);
+    togglePanel("sms-verify", smsVerifyOn);
+    togglePanel("sms-history", smsVerifyOn);
 
     // If current panel is disabled, bounce to home.
     var active = document.querySelector(".dash-panel:not([hidden])");
@@ -154,6 +156,8 @@
       } else if (id === "add-funds" && !fundsOn) {
         switchPanel("home");
       } else if ((id === "airtime" || id === "data" || id === "cable-tv" || id === "electricity") && !vtuOn) {
+        switchPanel("home");
+      } else if ((id === "sms-verify" || id === "sms-history") && !smsVerifyOn) {
         switchPanel("home");
       } else if (id === "support" && !supportOn) {
         switchPanel("home");
@@ -177,7 +181,7 @@
       "data": vtuOn,
       "electricity": vtuOn,
       "cable-tv": vtuOn,
-      "sms-verify": vtuOn,
+      "sms-verify": smsVerifyOn,
       "add-funds": fundsOn,
       "categories": storeOn,
       "referral": true
